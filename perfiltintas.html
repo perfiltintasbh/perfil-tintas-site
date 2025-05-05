@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil Tintas BH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .capa {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .perfil {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-top: -60px;
+      border: 4px solid #fff;
+      object-fit: cover;
+    }
+    h1 {
+      color: #333;
+      font-size: 1.8rem;
+      margin-top: 10px;
+    }
+    .bio {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .link {
+      background: #9900cc;
+      color: white;
+      text-decoration: none;
+      padding: 15px 20px;
+      margin: 10px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      display: block;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+    .link:hover {
+      background: #bb00ff;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #888;
+    }
+    #admin, #loginForm {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 30px;
+    }
+    input {
+      padding: 10px;
+      width: 100%;
+      margin: 5px 0;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+    }
+    button {
+      padding: 10px;
+      width: 100%;
+      margin-top: 10px;
+      background: #bb00ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    .card {
+      background: #eee;
+      color: #333;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- IMAGEM DE CAPA -->
+  <img src="https://via.placeholder.com/800x200.png?text=Sua+Capa+Aqui" class="capa" alt="Capa" />
+
+  <!-- IMAGEM DE PERFIL -->
+  <img src="https://via.placeholder.com/150.png?text=Perfil" class="perfil" alt="Perfil" />
+
+  <h1>Perfil Tintas BH</h1>
+  <p class="bio">🎨 Sua loja de tintas e acabamentos em BH!</p>
+
+  <!-- LINKS PÚBLICOS -->
+  <div id="linksPublicos">
+    <a class="link" href="https://wa.me/5531995730801" target="_blank">📲 Fale Conosco no WhatsApp</a>
+    <a class="link" href="https://www.instagram.com/perfiltintasbh?igsh=MWZsdG90ZG9vanliOQ==" target="_blank">📸 Acesse nosso Instagram</a>
+  </div>
+
+  <!-- LOGIN ADMIN -->
+  <div id="loginForm">
+    <h3 style="color:#333;">Área do Administrador</h3>
+    <input type="text" id="usuario" placeholder="Usuário" />
+    <input type="password" id="senha" placeholder="Senha" />
+    <button onclick="fazerLogin()">Entrar</button>
+  </div>
+
+  <!-- PAINEL ADMINISTRATIVO -->
+  <div id="admin" style="display:none;">
+    <h3 style="color:#333;">🔧 Adicionar Novo Link</h3>
+    <input type="text" id="titulo" placeholder="Título do Link" />
+    <input type="text" id="url" placeholder="URL do Link" />
+    <button onclick="adicionarLink()">Adicionar</button>
+    <div id="novosLinks"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 Perfil Tintas BH
+  </footer>
+
+  <script>
+    const usuarioCorreto = 'perfiltintas';
+    const senhaCorreta = 'B1ll4b8ng';
+
+    function fazerLogin() {
+      const u = document.getElementById('usuario').value;
+      const s = document.getElementById('senha').value;
+      if (u === usuarioCorreto && s === senhaCorreta) {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('admin').style.display = 'block';
+        carregarLinks();
+      } else {
+        alert('Usuário ou senha incorretos!');
+      }
+    }
+
+    function adicionarLink() {
+      const titulo = document.getElementById('titulo').value;
+      const url = document.getElementById('url').value;
+      if (titulo && url) {
+        const novo = `<div class="card"><strong>${titulo}</strong><br><a class="link" href="${url}" target="_blank">Acessar</a></div>`;
+        document.getElementById('novosLinks').innerHTML += novo;
+        salvarLink(novo);
+        document.getElementById('titulo').value = '';
+        document.getElementById('url').value = '';
+      } else {
+        alert('Preencha título e URL');
+      }
+    }
+
+    function salvarLink(link) {
+      let lista = localStorage.getItem('meusLinks') || '[]';
+      lista = JSON.parse(lista);
+      lista.push(link);
+      localStorage.setItem('meusLinks', JSON.stringify(lista));
+    }
+
+    function carregarLinks() {
+      let lista = localStorage.getItem('meusLinks') || '[]';
+      lista = JSON.parse(lista);
+      document.getElementById('novosLinks').innerHTML = lista.join('');
+    }
+
+    window.onload = carregarLinks;
+  </script>
+</body>
+</html>
